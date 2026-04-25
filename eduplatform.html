@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 <title>EduPlatform — Aprende sin límites</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,9 +25,32 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;transition:background .2s,color .2s,border-color .2s}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+html,body{-webkit-overflow-scrolling:touch}
 h1,h2,h3,h4,h5{font-family:'Syne',sans-serif}
 .page{display:none;min-height:100vh}
 .page.active{display:flex;flex-direction:column}
+
+/* ── RESPONSIVE MOBILE ── */
+@media (max-width: 768px) {
+  .hero h1{font-size:2rem!important;line-height:1.2}
+  .stats-strip{flex-direction:column;gap:1rem;padding:1rem}
+  .grid2,.grid3,.grid4{grid-template-columns:1fr!important}
+  nav{padding:0 1rem;height:auto;min-height:64px;flex-wrap:wrap}
+  .nav-links{gap:0.5rem;flex-wrap:wrap;font-size:.85rem}
+  .nav-btn{padding:.4rem .8rem;font-size:.85rem}
+  .main-content{padding:1rem}
+  .player-layout{flex-direction:column}
+  .playlist{width:100%;border-left:none;border-top:1px solid var(--border);max-height:400px}
+  .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);padding:1rem}
+  .layout-with-sidebar{flex-direction:column}
+  .hero{padding:3rem 1rem}
+  .card,.card2{padding:1rem}
+  .section-title{font-size:1.2rem}
+  .modal{max-width:95%;margin:1rem}
+  .table-wrap{font-size:.85rem}
+  th,td{padding:.5rem}
+}
+
 
 /* ── NAV ── */
 nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
