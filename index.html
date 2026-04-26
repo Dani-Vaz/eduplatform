@@ -606,8 +606,23 @@ function goPage(p){
   document.getElementById('page-'+p).classList.add('active');
   window.scrollTo(0,0);
 }
-function openModal(id){document.getElementById(id).classList.add('open')}
-function closeModal(id){document.getElementById(id).classList.remove('open')}
+function openModal(id){
+  const modal = document.getElementById(id);
+  modal.classList.add('open');
+  // FORCE display for Android WebView
+  modal.style.display = 'flex';
+  modal.style.visibility = 'visible';
+  modal.style.opacity = '1';
+  console.log('🚀 Modal opened:', id, 'display:', modal.style.display);
+}
+function closeModal(id){
+  const modal = document.getElementById(id);
+  modal.classList.remove('open');
+  // Remove forced styles
+  modal.style.display = 'none';
+  modal.style.visibility = 'hidden';
+  modal.style.opacity = '0';
+}
 function notify(msg,type='info'){
   const n=document.getElementById('notif');
   n.className='notif notif-'+type+' show';
