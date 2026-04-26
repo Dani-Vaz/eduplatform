@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Modal BRUTAL</title>
+<style>
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #0a0a0f;
+    color: white;
+}
+
+.btn {
+    background: #7c5cfc;
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    font-size: 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+}
+
+/* MODAL - VERSIÓN ULTRA SIMPLE */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #1e1e2a;
+    margin: 100px auto;
+    padding: 40px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+
+<h1>🔥 TEST MODAL BRUTAL</h1>
+<p>Si haces click y NO aparece el modal, entonces Android WebView tiene un problema de compatibilidad.</p>
+
+<button class="btn" onclick="openModal1()">🚀 MÉTODO 1: Display Flex</button>
+<button class="btn" onclick="openModal2()">💪 MÉTODO 2: Display Block</button>
+<button class="btn" onclick="openModal3()">🔥 MÉTODO 3: innerHTML Directo</button>
+<button class="btn" onclick="openModal4()">⚡ MÉTODO 4: createElement</button>
+
+<div id="log" style="margin-top: 20px; padding: 20px; background: #1a1a24; border-radius: 5px;">
+    <strong>📝 LOG:</strong>
+    <div id="logContent"></div>
+</div>
+
+<!-- MODAL 1 -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h2>✅ MODAL 1 ABIERTO!</h2>
+        <p>Método: display = 'flex'</p>
+        <button class="close" onclick="closeModal1()">Cerrar</button>
+    </div>
+</div>
+
+<!-- MODAL 2 -->
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <h2>✅ MODAL 2 ABIERTO!</h2>
+        <p>Método: display = 'block'</p>
+        <button class="close" onclick="closeModal2()">Cerrar</button>
+    </div>
+</div>
+
+<script>
+function log(msg) {
+    const logDiv = document.getElementById('logContent');
+    const time = new Date().toLocaleTimeString();
+    logDiv.innerHTML += `<div>[${time}] ${msg}</div>`;
+    console.log(msg);
+}
+
+// MÉTODO 1: Display Flex
+function openModal1() {
+    log('🚀 Intentando abrir Modal 1 con display flex...');
+    const modal = document.getElementById('modal1');
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    log('✅ Modal 1: display = ' + modal.style.display);
+    log('✅ Modal 1: computed display = ' + window.getComputedStyle(modal).display);
+}
+
+function closeModal1() {
+    log('❌ Cerrando Modal 1...');
+    document.getElementById('modal1').style.display = 'none';
+}
+
+// MÉTODO 2: Display Block
+function openModal2() {
+    log('💪 Intentando abrir Modal 2 con display block...');
+    const modal = document.getElementById('modal2');
+    modal.style.display = 'block';
+    log('✅ Modal 2: display = ' + modal.style.display);
+    log('✅ Modal 2: computed display = ' + window.getComputedStyle(modal).display);
+}
+
+function closeModal2() {
+    log('❌ Cerrando Modal 2...');
+    document.getElementById('modal2').style.display = 'none';
+}
+
+// MÉTODO 3: innerHTML directo
+function openModal3() {
+    log('🔥 Intentando abrir Modal 3 con innerHTML...');
+    const overlay = document.createElement('div');
+    overlay.id = 'modal3';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+        <div style="background:#1e1e2a;padding:40px;border-radius:10px;text-align:center;max-width:500px;">
+            <h2>✅ MODAL 3 ABIERTO!</h2>
+            <p>Método: createElement + innerHTML</p>
+            <button onclick="closeModal3()" style="background:#ef4444;color:white;border:none;padding:15px 30px;font-size:18px;border-radius:5px;margin-top:20px;">Cerrar</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    log('✅ Modal 3 creado y agregado al DOM');
+}
+
+function closeModal3() {
+    log('❌ Cerrando Modal 3...');
+    const modal = document.getElementById('modal3');
+    if (modal) modal.remove();
+}
+
+// MÉTODO 4: createElement completo
+function openModal4() {
+    log('⚡ Intentando abrir Modal 4 con createElement...');
+    
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'modal4';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.9)';
+    overlay.style.zIndex = '9999';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    
+    // Crear contenido
+    const content = document.createElement('div');
+    content.style.background = '#1e1e2a';
+    content.style.padding = '40px';
+    content.style.borderRadius = '10px';
+    content.style.textAlign = 'center';
+    content.style.maxWidth = '500px';
+    
+    const title = document.createElement('h2');
+    title.textContent = '✅ MODAL 4 ABIERTO!';
+    
+    const text = document.createElement('p');
+    text.textContent = 'Método: createElement puro';
+    
+    const btn = document.createElement('button');
+    btn.textContent = 'Cerrar';
+    btn.style.cssText = 'background:#ef4444;color:white;border:none;padding:15px 30px;font-size:18px;border-radius:5px;margin-top:20px;';
+    btn.onclick = closeModal4;
+    
+    content.appendChild(title);
+    content.appendChild(text);
+    content.appendChild(btn);
+    overlay.appendChild(content);
+    document.body.appendChild(overlay);
+    
+    log('✅ Modal 4 creado elemento por elemento');
+}
+
+function closeModal4() {
+    log('❌ Cerrando Modal 4...');
+    const modal = document.getElementById('modal4');
+    if (modal) modal.remove();
+}
+
+// Log inicial
+log('🔧 Página cargada. WebView ready.');
+log('📱 User Agent: ' + navigator.userAgent);
+</script>
+
+</body>
+</html>
