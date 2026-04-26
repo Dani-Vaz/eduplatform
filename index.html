@@ -1337,5 +1337,77 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
   o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});
 });
 </script>
+
+<script>
+// WEBVIEW TOUCH FIX - Convierte todos onclick a addEventListener
+(function() {
+    'use strict';
+    
+    console.log('🔧 Iniciando WebView Touch Fix...');
+    
+    function initTouchFix() {
+        // Encuentra TODOS los elementos con onclick
+        const clickables = document.querySelectorAll('[onclick]');
+        
+        console.log('📱 Elementos con onclick encontrados:', clickables.length);
+        
+        clickables.forEach(function(element, index) {
+            const onclickAttr = element.getAttribute('onclick');
+            
+            if (onclickAttr) {
+                console.log('🔨 Fixing element #' + index + ':', element.tagName, onclickAttr);
+                
+                // Remueve el onclick original
+                element.removeAttribute('onclick');
+                
+                // Agrega event listener correcto
+                element.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('👆 Click detectado en:', element.tagName);
+                    
+                    // Ejecuta la función
+                    try {
+                        eval(onclickAttr);
+                        console.log('✅ Función ejecutada correctamente');
+                    } catch (err) {
+                        console.error('❌ Error ejecutando función:', err);
+                    }
+                }, true);
+                
+                // Agrega touch listener también
+                element.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    console.log('👆 Touch detectado en:', element.tagName);
+                    
+                    try {
+                        eval(onclickAttr);
+                        console.log('✅ Función ejecutada correctamente (touch)');
+                    } catch (err) {
+                        console.error('❌ Error ejecutando función (touch):', err);
+                    }
+                }, true);
+                
+                // Agrega estilos para feedback visual
+                element.style.cursor = 'pointer';
+                element.style.webkitTapHighlightColor = 'rgba(0,0,0,0.1)';
+            }
+        });
+        
+        console.log('✅ WebView Touch Fix aplicado a', clickables.length, 'elementos');
+    }
+    
+    // Ejecuta cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTouchFix);
+    } else {
+        initTouchFix();
+    }
+    
+    // Ejecuta también después de un delay por si acaso
+    setTimeout(initTouchFix, 1000);
+    setTimeout(initTouchFix, 3000);
+})();
+</script>
 </body>
 </html>
