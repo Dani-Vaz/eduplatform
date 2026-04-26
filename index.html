@@ -115,8 +115,8 @@ tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--bg3)}
 
 /* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
-.modal-overlay.open{display:flex}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex !important}
 .modal{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
 .modal-header{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .modal-body{padding:1.5rem}
