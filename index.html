@@ -1339,14 +1339,13 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 </script>
 
 <script>
-// WEBVIEW TOUCH FIX - Convierte todos onclick a addEventListener
+// WEBVIEW TOUCH FIX V2 - Ejecuta en contexto global
 (function() {
     'use strict';
     
-    console.log('🔧 Iniciando WebView Touch Fix...');
+    console.log('🔧 Iniciando WebView Touch Fix V2...');
     
     function initTouchFix() {
-        // Encuentra TODOS los elementos con onclick
         const clickables = document.querySelectorAll('[onclick]');
         
         console.log('📱 Elementos con onclick encontrados:', clickables.length);
@@ -1364,24 +1363,27 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
                 element.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('👆 Click detectado en:', element.tagName);
+                    console.log('👆 Click detectado en:', element.tagName, 'ejecutando:', onclickAttr);
                     
-                    // Ejecuta la función
                     try {
-                        eval(onclickAttr);
+                        // EJECUTA EN EL CONTEXTO GLOBAL
+                        var func = new Function(onclickAttr);
+                        func.call(window);
                         console.log('✅ Función ejecutada correctamente');
                     } catch (err) {
                         console.error('❌ Error ejecutando función:', err);
                     }
                 }, true);
                 
-                // Agrega touch listener también
+                // Agrega touch listener
                 element.addEventListener('touchend', function(e) {
                     e.preventDefault();
-                    console.log('👆 Touch detectado en:', element.tagName);
+                    console.log('👆 Touch detectado en:', element.tagName, 'ejecutando:', onclickAttr);
                     
                     try {
-                        eval(onclickAttr);
+                        // EJECUTA EN EL CONTEXTO GLOBAL
+                        var func = new Function(onclickAttr);
+                        func.call(window);
                         console.log('✅ Función ejecutada correctamente (touch)');
                     } catch (err) {
                         console.error('❌ Error ejecutando función (touch):', err);
@@ -1394,7 +1396,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
             }
         });
         
-        console.log('✅ WebView Touch Fix aplicado a', clickables.length, 'elementos');
+        console.log('✅ WebView Touch Fix V2 aplicado a', clickables.length, 'elementos');
     }
     
     // Ejecuta cuando el DOM esté listo
@@ -1404,7 +1406,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
         initTouchFix();
     }
     
-    // Ejecuta también después de un delay por si acaso
+    // Ejecuta también después de un delay
     setTimeout(initTouchFix, 1000);
     setTimeout(initTouchFix, 3000);
 })();
