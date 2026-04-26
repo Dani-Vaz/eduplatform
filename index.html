@@ -1339,11 +1339,11 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
 </script>
 
 <script>
-// WEBVIEW TOUCH FIX V2 - Ejecuta en contexto global
+// WEBVIEW TOUCH FIX V3 - CON DEBUG COMPLETO
 (function() {
     'use strict';
     
-    console.log('🔧 Iniciando WebView Touch Fix V2...');
+    console.log('🔧 Iniciando WebView Touch Fix V3...');
     
     function initTouchFix() {
         const clickables = document.querySelectorAll('[onclick]');
@@ -1366,12 +1366,29 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
                     console.log('👆 Click detectado en:', element.tagName, 'ejecutando:', onclickAttr);
                     
                     try {
+                        // DEBUG: Verificar que la función existe
+                        if (onclickAttr.includes('openModal')) {
+                            console.log('🔍 openModal existe?', typeof window.openModal);
+                            console.log('🔍 document.getElementById existe?', typeof document.getElementById);
+                        }
+                        
                         // EJECUTA EN EL CONTEXTO GLOBAL
                         var func = new Function(onclickAttr);
                         func.call(window);
+                        
+                        // DEBUG: Verificar si el modal se abrió
+                        if (onclickAttr.includes('openModal')) {
+                            var modalId = onclickAttr.match(/openModal\('([^']+)'\)/)[1];
+                            var modal = document.getElementById(modalId);
+                            console.log('🔍 Modal element:', modal);
+                            console.log('🔍 Modal classes:', modal ? modal.className : 'NOT FOUND');
+                            console.log('🔍 Modal display:', modal ? window.getComputedStyle(modal).display : 'NOT FOUND');
+                        }
+                        
                         console.log('✅ Función ejecutada correctamente');
                     } catch (err) {
                         console.error('❌ Error ejecutando función:', err);
+                        console.error('❌ Stack:', err.stack);
                     }
                 }, true);
                 
@@ -1381,7 +1398,6 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
                     console.log('👆 Touch detectado en:', element.tagName, 'ejecutando:', onclickAttr);
                     
                     try {
-                        // EJECUTA EN EL CONTEXTO GLOBAL
                         var func = new Function(onclickAttr);
                         func.call(window);
                         console.log('✅ Función ejecutada correctamente (touch)');
@@ -1396,7 +1412,7 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
             }
         });
         
-        console.log('✅ WebView Touch Fix V2 aplicado a', clickables.length, 'elementos');
+        console.log('✅ WebView Touch Fix V3 aplicado a', clickables.length, 'elementos');
     }
     
     // Ejecuta cuando el DOM esté listo
@@ -1411,5 +1427,6 @@ document.querySelectorAll('.modal-overlay').forEach(o=>{
     setTimeout(initTouchFix, 3000);
 })();
 </script>
+
 </body>
 </html>
